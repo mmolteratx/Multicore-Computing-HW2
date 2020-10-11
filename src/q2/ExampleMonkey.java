@@ -11,7 +11,7 @@ public class ExampleMonkey implements Runnable{
 
     @Test
     public void main() throws InterruptedException {
-        main(10, 6);
+        main(50, 30);
     }
 
     public void main(int numMonkeys, int tripsAcross) throws InterruptedException {
@@ -57,7 +57,7 @@ public class ExampleMonkey implements Runnable{
                 int step = 0;
                 int maxSteps = 10;
                 monkey.ClimbRope(direction);
-                while (step < 10) {
+                while (step < maxSteps) {
                     System.out.println("    There are "+monkey.getNumMonkeysOnRope()+" monkeys on the bridge! ID:"+ID);
                     //System.out.println("Monkey" + ID + " is " + step + "/" + maxSteps + " of the way across");
                     step++;

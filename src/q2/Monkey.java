@@ -41,18 +41,18 @@ public class Monkey {
      */
     public void ClimbRope(int direction) throws InterruptedException {
         monitorLock.lock();
-        System.out.println("    There are "+getNumMonkeysOnRope()+" monkeys on the bridge!");
+        //System.out.println("    There are "+getNumMonkeysOnRope()+" monkeys on the bridge!");
         if (direction == 0) {
             need0.set(true);
-            System.out.println("Monkey" + monkeyID + " wants to climb rope 0!");
+            //System.out.println("Monkey" + monkeyID + " wants to climb rope 0!");
         }
         if (direction == 1) {
             need1.set(true);
-            System.out.println("Monkey" + monkeyID + " wants to climb rope 1!");
+            //System.out.println("Monkey" + monkeyID + " wants to climb rope 1!");
         }
         if (direction == -1) {
             kongWants.set(true);
-            System.out.println("Monkey"+monkeyID +" wants to climb rope (KONG)!");
+            //System.out.println("Monkey"+monkeyID +" wants to climb rope (KONG)!");
         }
         try {
             // while I have not been able to cross the bridge
@@ -60,22 +60,22 @@ public class Monkey {
             while(!onBridge.get()) {
                 // if I am Kong
                 if (direction == -1) {
-                    System.out.println("Monkey"+monkeyID+" aka Kong is waiting!");
+                    //System.out.println("Monkey"+monkeyID+" aka Kong is waiting!");
                     goKong.await();
                 }
                 else if (direction == 0){
-                    System.out.println("Monkey" + monkeyID + " is waiting to go 0!");
+                    //System.out.println("Monkey" + monkeyID + " is waiting to go 0!");
                     go0.await();
                 }
                 else {
-                    System.out.println("Monkey"+monkeyID+" is waiting to go 1!");
+                    //System.out.println("Monkey"+monkeyID+" is waiting to go 1!");
                     go1.await();
                 }
-                System.out.println("Monkey" + monkeyID + " is testing conditions");
+                //System.out.println("Monkey" + monkeyID + " is testing conditions");
                 TestBridge(direction);
             }
         } finally{
-            System.out.println("    There are "+getNumMonkeysOnRope()+" monkeys on the bridge!");
+            //System.out.println("    There are "+getNumMonkeysOnRope()+" monkeys on the bridge!");
             monitorLock.unlock();
         }
     }
@@ -89,10 +89,10 @@ public class Monkey {
             // and I am Kong
             if (numMonkeys.get() == 0 && direction == -1) {
                 numMonkeys.getAndIncrement();
-                System.out.println("Monkey" + monkeyID + " aka Kong can go!");
+                //System.out.println("Monkey" + monkeyID + " aka Kong can go!");
                 // set direction for bridge
                 crossingDirection.set(direction);
-                System.out.println("  Bridge direction set to KONG");
+                //System.out.println("  Bridge direction set to KONG");
                 onBridge.set(true);
             }
         // Kong is not waiting and there is space
@@ -100,16 +100,16 @@ public class Monkey {
             // and no one is on bridge
             if (numMonkeys.get() == 0) {
                 numMonkeys.getAndIncrement();
-                System.out.println("Monkey" + monkeyID + " can go anywhere!");
+                //System.out.println("Monkey" + monkeyID + " can go anywhere!");
                 // set direction for bridge
                 crossingDirection.set(direction);
-                System.out.println("  Bridge direction set to " + direction);
+                //System.out.println("  Bridge direction set to " + direction);
                 onBridge.set(true);
             }
             // others on bridge are going my way
             else if (numMonkeys.get() > 0 && numMonkeys.get() < 3 && direction == crossingDirection.get()) {
                 numMonkeys.getAndIncrement();
-                System.out.println("Monkey" + monkeyID + " can go in the same direction!");
+                //System.out.println("Monkey" + monkeyID + " can go in the same direction!");
                 onBridge.set(true);
             }
         }
@@ -120,14 +120,14 @@ public class Monkey {
      */
     public void LeaveRope() {
         monitorLock.lock();
-        System.out.println("    There are "+getNumMonkeysOnRope()+" monkeys on the bridge!");
+        //System.out.println("    There are "+getNumMonkeysOnRope()+" monkeys on the bridge!");
         // update variables
         onBridge.set(false);
         numMonkeys.getAndDecrement();
 
         NextBridge();
 
-        System.out.println("    There are "+getNumMonkeysOnRope()+" monkeys on the bridge!");
+        //System.out.println("    There are "+getNumMonkeysOnRope()+" monkeys on the bridge!");
         monitorLock.unlock();
     }
 
@@ -137,7 +137,7 @@ public class Monkey {
     public synchronized void NextBridge() {
         // I am Kong
         if(crossingDirection.get() == -1) {
-            System.out.println("Monkey"+monkeyID+" aka Kong is done!");
+            //System.out.println("Monkey"+monkeyID+" aka Kong is done!");
             kongWants.set(false);
             // and the 0 crossing monkeys are waiting first
             if (need0.get()) {
@@ -152,7 +152,7 @@ public class Monkey {
         }
         // if I am not Kong
         else {
-            System.out.println("Monkey"+monkeyID+" is done!");
+            //System.out.println("Monkey"+monkeyID+" is done!");
             // and and I am the last one over
             if (numMonkeys.get() == 0) {
                 // and Kong is waiting
