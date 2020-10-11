@@ -19,7 +19,7 @@ public class CyclicBarrier {
         while (sema.availablePermits() > 0 && !rel.get()) {
         }
         
-        if(!rel.get()) {rel.set(true)};
+        if(!rel.get()) {rel.set(true);}
         
         sema.release();
         return pos;
